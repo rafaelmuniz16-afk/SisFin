@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#6d28d9">
+  <meta name="description" content="SisFin — suas contas, cartões e finanças da família em um só lugar.">
+  <meta name="referrer" content="no-referrer">
+  <title>SisFin · Seu dinheiro, com clareza</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='19' fill='%236d28d9'/%3E%3Cpath d='M17 37h13V19h17M17 27h13v18h17' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <!-- Tailwind pré-compilado: não utiliza o compilador Play CDN em produção. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" integrity="sha384-HtMZLkYo+pR5/u7zCzXxMJP6QoNnQJt1qkHM0EaOPvGDIzaVZbmYr/TlvUZ/sKAg" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js" integrity="sha384-uTYyvsSSUZeaPhb5RbKlQa0zY/WpX/QHfvg2mczXyBQOpkWPEDy9lczyp+w7SKXu" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
+  <style>
+    :root{--purple:#6d28d9;--purple-dark:#5420a6;--purple-soft:#f0eaff;--ink:#242036;--muted:#79748b;--line:#ebe8f0;--canvas:#f7f7fb;--green:#167d64;--red:#bd3856;--shadow:0 10px 38px rgba(45,27,82,.045)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button,a,input,select{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,a:focus-visible{outline:3px solid #baa0f5;outline-offset:4px}[hidden]{display:none!important}.icon{width:20px;height:20px;stroke-width:1.8;flex-shrink:0}.muted{color:var(--muted)}.small{font-size:12px}.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.money{font-variant-numeric:tabular-nums;letter-spacing:-.035em}.btn{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 17px;border-radius:13px;font-weight:650;transition:background .16s,transform .16s;border:1px solid transparent}.btn:active{transform:translateY(1px)}.btn-primary{background:var(--purple);color:#fff;box-shadow:0 5px 14px #6d28d920}.btn-primary:hover{background:var(--purple-dark)}.btn-light{background:#fff;border-color:var(--line);color:var(--ink)}.btn-light:hover{background:#f5f1fe}.btn-soft{background:var(--purple-soft);color:var(--purple)}.btn-text{background:transparent;color:var(--purple);padding-left:5px;padding-right:5px}.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:#fff;flex-shrink:0}.icon-btn:hover{background:var(--purple-soft)}.text-btn{color:var(--purple);font-size:13px;font-weight:650;min-height:44px;padding:8px 4px}.brand{display:flex;align-items:center;gap:10px;font-size:25px;letter-spacing:-.06em;font-weight:750}.brand-mark{height:37px;width:37px;display:grid;place-items:center;background:var(--purple);border-radius:12px;color:white}.brand-mark svg{width:25px;height:25px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.tag{display:inline-flex;gap:5px;align-items:center;border-radius:7px;font-size:11px;font-weight:650;padding:4px 8px;white-space:nowrap}.tag-purple{color:var(--purple);background:var(--purple-soft)}.tag-green{color:var(--green);background:#eaf7f1}.tag-amber{color:#986318;background:#fff4dc}.tag-red{color:var(--red);background:#ffedf1}.tag-gray{color:#766f85;background:#f1f0f5}.field-label{display:block;font-size:12px;font-weight:650;margin-bottom:7px;color:#514a64}.input{width:100%;height:48px;padding:0 13px;border:1px solid #dfdbe7;border-radius:11px;color:var(--ink);background:white;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s}.input:focus{border-color:#a280e8;box-shadow:0 0 0 3px #ece3ff}.input::placeholder{color:#aaa4b8}.form-field{margin-bottom:17px}.hint{font-size:12px;color:var(--muted);margin-top:6px}.form-error{border:1px solid #ffd9e2;background:#fff3f6;color:#a62947;border-radius:11px;padding:11px 13px;font-size:13px;margin-bottom:16px}.form-info{background:#f6f2ff;border:1px solid #eae0ff;color:#634d8c;border-radius:12px;padding:13px;font-size:12px}.empty{padding:26px 15px;text-align:center;color:var(--muted)}.empty .empty-icon{width:49px;height:49px;border-radius:16px;background:#f5f1fe;color:#9b78d3;display:grid;place-items:center;margin:0 auto 12px}.empty strong{display:block;font-size:14px;color:var(--ink);font-weight:600;margin-bottom:5px}.empty p{max-width:320px;margin:auto;font-size:12px}.empty .btn{margin-top:15px}.loading-sheen{animation:pulse 1.3s ease-in-out infinite}.skeleton{display:block;height:27px;width:120px;border-radius:6px;background:#e9e5ef;animation:pulse 1.3s ease-in-out infinite}@keyframes pulse{50%{opacity:.42}}.spinner{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .75s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.skip-link{position:fixed;top:-100px;left:20px;z-index:200;background:white;padding:10px;border-radius:7px}.skip-link:focus{top:15px}
+    .auth-shell{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}.auth-art{position:relative;overflow:hidden;min-height:100vh;padding:42px 11%;color:white;background:radial-gradient(ellipse at 85% 75%,#914ee5 0%,#6426be 42%,#361466 100%);display:flex;flex-direction:column;justify-content:space-between}.auth-art:before,.auth-art:after{content:"";position:absolute;width:470px;height:470px;border:1px solid #ffffff18;border-radius:50%;right:-135px;bottom:-90px}.auth-art:after{width:600px;height:600px;bottom:-155px;right:-200px}.auth-art .brand-mark{background:#ffffff20}.auth-copy{position:relative;z-index:1;margin:60px 0}.auth-copy h1{font-size:clamp(36px,4vw,57px);font-weight:600;line-height:1.13;letter-spacing:-.045em;margin:20px 0}.auth-copy>p{font-size:16px;color:#e0cef7;max-width:370px}.auth-pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:27px}.auth-pills span{border:1px solid #ffffff27;padding:8px 12px;border-radius:20px;color:#eadfff;font-size:12px}.auth-symbol{display:flex;align-items:end;gap:10px;height:93px;margin:35px 0 30px}.auth-symbol span{display:block;width:40px;background:#ffffff18;border-radius:10px 10px 3px 3px}.auth-symbol span:nth-child(1){height:30%}.auth-symbol span:nth-child(2){height:48%}.auth-symbol span:nth-child(3){height:42%}.auth-symbol span:nth-child(4){height:72%}.auth-symbol span:nth-child(5){height:100%;background:#bca0ee}.auth-foot{position:relative;z-index:1;color:#d7c7ea;font-size:12px}.auth-content{padding:36px 30px;display:flex;flex-direction:column;min-height:100vh}.auth-top{display:flex;justify-content:flex-end}.connection-button{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;padding:7px 10px;border:1px solid var(--line);border-radius:20px;min-height:40px;max-width:100%}.connection-dot{height:6px;width:6px;background:#ad9cc8;border-radius:50%;flex-shrink:0}.auth-form-wrap{width:100%;max-width:370px;margin:auto;padding:30px 0}.auth-mobile-brand{display:none;margin-bottom:36px}.auth-form-wrap h2{font-size:29px;line-height:1.2;letter-spacing:-.04em;font-weight:650;margin:10px 0}.auth-subtitle{color:var(--muted);margin-bottom:26px}.auth-tabs{display:flex;background:#eeedf3;border-radius:11px;padding:4px;margin:24px 0}.auth-tab{width:50%;height:39px;border-radius:8px;font-size:13px;font-weight:650;color:var(--muted)}.auth-tab.active{background:white;box-shadow:0 1px 5px #29203312;color:var(--purple)}.password-wrap{position:relative}.password-wrap .input{padding-right:48px}.password-toggle{position:absolute;right:3px;top:3px;height:42px;width:42px;display:grid;place-items:center;color:#8c849d}.auth-bottom{font-size:11px;text-align:center;color:#a49cae;padding:24px 0 2px}.family-option{width:100%;display:flex;align-items:center;gap:13px;text-align:left;padding:14px;border:1px solid var(--line);border-radius:13px;background:white;min-height:70px;margin-bottom:10px}.family-option:hover{border-color:#b499e5;background:#faf7ff}.family-avatar{width:38px;height:38px;border-radius:12px;background:var(--purple-soft);color:var(--purple);display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0}
+    .sidebar{position:fixed;inset:0 auto 0 0;width:238px;padding:32px 20px 22px;background:#181325;color:#b4abbf;display:flex;flex-direction:column;z-index:30}.sidebar>.brand{color:#fff;margin:0 11px 38px}.sidebar>.brand .brand-mark{background:#8a49e3}.workspace-selector{display:flex;align-items:center;gap:10px;padding:12px 10px;border:1px solid #ffffff13;background:#ffffff05;border-radius:12px;width:100%;text-align:left;margin-bottom:33px}.workspace-selector .family-avatar{background:#382551;color:#cdb4ff;width:33px;height:33px}.workspace-selector strong{display:block;color:#eee8f5;font-size:12px;max-width:135px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.workspace-selector small{font-size:10px;color:#948ba0}.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;margin:0 13px 10px;color:#756b83;font-weight:600}.nav-button{display:flex;align-items:center;gap:12px;min-height:47px;padding:10px 13px;border-radius:10px;width:100%;margin:4px 0;text-align:left;font-size:13px}.nav-button.active{color:#fff;background:#6d28d9}.nav-button:hover:not(.active){background:#ffffff08;color:white}.sidebar-note{padding:17px;border:1px solid #ffffff12;border-radius:14px;margin-top:auto;background:linear-gradient(120deg,#37204655,#ffffff02)}.sidebar-note strong{display:block;color:#dcd0ed;font-size:12px;margin:10px 0 4px}.sidebar-note p{font-size:11px;color:#9685a9}.profile{margin-top:23px;display:flex;align-items:center;gap:10px;padding:0 8px}.avatar{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;font-size:11px;font-weight:700;background:#eae2fa;color:#6f45a7;flex-shrink:0}.profile strong{font-size:12px;color:white;display:block;max-width:116px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.profile small{font-size:10px}.sidebar .logout{color:#ad9abc;margin-left:auto;height:40px;width:34px}.main-shell{margin-left:238px;min-height:100vh}.topbar{height:78px;border-bottom:1px solid var(--line);background:#ffffffb8;display:flex;align-items:center;justify-content:space-between;padding:0 40px}.breadcrumb{font-size:12px;color:#91899f;display:flex;align-items:center;gap:9px}.breadcrumb strong{font-weight:550;color:#544b64}.topbar-right{display:flex;align-items:center;gap:17px}.top-status{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--muted)}.top-status>span{width:6px;height:6px;border-radius:50%;background:#58b995}.page{padding:31px 40px 36px;max-width:1590px;margin:auto}.page-heading{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:27px}.page-heading h1{font-size:28px;letter-spacing:-.04em;font-weight:650;line-height:1.3;margin-bottom:5px}.page-heading p{font-size:13px;color:var(--muted)}.heading-controls{display:flex;align-items:center;gap:10px}.month-picker{background:white;border:1px solid var(--line);border-radius:11px;display:flex;align-items:center;height:44px;overflow:hidden}.month-picker input{width:135px;min-width:0;border:0;background:none;font-size:12px;font-weight:600;padding:4px;color:#514862;outline:none}.month-picker button{height:42px;width:28px;display:grid;place-items:center;color:#92849f}.month-picker .icon{width:15px;height:15px}.notice{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff4e5;border:1px solid #f3e1c7;padding:11px 15px;border-radius:12px;margin-bottom:20px;color:#8c642b;font-size:12px}.notice.error{background:#fff0f4;border-color:#fadbe3;color:#a63852}.notice .btn{min-height:32px;padding:3px 8px;font-size:12px}
+    .metrics-grid{display:grid;grid-template-columns:1.38fr 1fr 1fr;gap:18px;margin-bottom:22px}.metric-card{padding:22px 23px;min-height:184px}.metric-card .metric-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#6a617e}.metric-symbol{display:grid;place-items:center;width:33px;height:33px;border-radius:10px}.metric-value{font-size:29px;font-weight:650;line-height:1.25;margin:18px 0 10px}.metric-foot{display:flex;align-items:center;gap:6px;font-size:11px;color:#8c819b}.balance-card{position:relative;overflow:hidden;background:linear-gradient(112deg,#6321c8,#7c3cdb);border-color:transparent;color:#fff}.balance-card .metric-top,.balance-card .metric-foot{color:#ddcaf9}.balance-card .metric-value{font-size:33px}.balance-card:after{content:"";position:absolute;right:-75px;bottom:-132px;width:285px;height:285px;border:35px solid #ffffff06;border-radius:50%;pointer-events:none}.balance-card .metric-value,.balance-card .metric-foot,.balance-card .metric-top{position:relative;z-index:1}.balance-card .icon-btn{background:#ffffff14;color:#eaddff;width:31px;height:31px;border:0;min-height:31px}.balance-card .icon{width:17px;height:17px}.balance-card .skeleton{background:#a982e3}.quick-actions{display:flex;gap:10px;align-items:center;margin-bottom:28px}.quick-actions .quick-label{font-size:11px;color:#93899f;margin-right:4px}.quick-actions .btn{font-size:12px;background:white;border:1px solid var(--line);color:#5e526e;box-shadow:none}.quick-actions .btn:first-of-type{color:var(--purple);background:var(--purple-soft);border-color:#e8dcfc}.quick-actions .icon{width:17px;height:17px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.section-heading h2{font-size:15px;font-weight:650;letter-spacing:-.015em}.section-heading .small{font-size:11px}.section-sub{font-size:11px;color:var(--muted)}.credit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:27px}.credit-card{padding:19px 20px;min-width:0}.credit-header{display:flex;gap:10px;align-items:center}.credit-logo{height:34px;width:34px;border-radius:10px;color:var(--purple);background:#f1eafb;display:grid;place-items:center}.credit-header strong{font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.credit-header small{font-size:10px;color:var(--muted)}.credit-amount{display:flex;justify-content:space-between;gap:8px;align-items:end;margin:20px 0 13px}.credit-amount .money{font-size:22px;font-weight:650}.credit-caption{font-size:10px;color:var(--muted);margin-bottom:2px}.credit-progress{height:5px;background:#eee8f7;border-radius:10px;overflow:hidden}.credit-progress>span{height:100%;display:block;background:#9570d7;border-radius:10px}.credit-bottom{display:flex;justify-content:space-between;gap:8px;margin-top:9px;color:#8c819b;font-size:10px}.credit-card .text-btn{width:100%;border-top:1px solid #f0edf4;margin-top:12px;padding-top:10px;min-height:37px;font-size:11px;display:flex;align-items:center;justify-content:space-between}.dashboard-bottom{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:22px}.panel-head{display:flex;align-items:center;justify-content:space-between;padding:21px 23px 14px}.panel-head h2{font-size:15px;font-weight:650;letter-spacing:-.01em}.panel-head p{font-size:11px;color:var(--muted);margin-top:2px}.transaction-row{display:grid;grid-template-columns:37px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 23px;border-top:1px solid #f2eff5;min-height:74px}.tx-icon{height:35px;width:35px;border-radius:11px;background:#f0ebfa;color:#8664bb;display:grid;place-items:center}.tx-icon .icon{height:17px;width:17px}.tx-title{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tx-sub{font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tx-value{text-align:right;font-size:12px;font-weight:650;white-space:nowrap}.tx-date{font-size:10px;color:var(--muted);text-align:right;margin-top:3px;font-weight:400}.tx-income{color:var(--green)}.tx-neutral{color:#777084}.donut-wrap{position:relative;height:215px;max-width:225px;margin:0 auto 4px}.donut-wrap canvas{width:100%!important;height:100%!important}.donut-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none}.donut-center small{font-size:10px;color:var(--muted)}.donut-center strong{font-size:21px;font-weight:650;letter-spacing:-.035em;margin-top:1px}.category-legend{padding:10px 23px 19px}.category-line{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:11px}.category-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}.category-line span:nth-child(2){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#766b87}.category-line strong{font-size:11px;font-weight:600}.category-line small{width:35px;text-align:right;color:#a198ae;font-size:10px}.chart-note{font-size:10px;color:var(--muted);padding:0 23px 16px}.page-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;color:#aaa1b4;margin-top:28px}.page-footer .icon{height:12px;width:12px}.footer-dot{width:4px;height:4px;background:#c7becf;border-radius:50%}.setup-banner{display:flex;gap:16px;align-items:center;padding:20px 23px;margin-bottom:23px;border:1px dashed #c7abe9;border-radius:16px;background:#f7f1ff}.setup-banner h3{font-weight:650;font-size:13px}.setup-banner p{font-size:12px;color:#9380a6;margin-top:3px}.setup-banner .btn{margin-left:auto;white-space:nowrap;font-size:12px}.accounts-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:25px}.account-tile{padding:23px}.account-tile .money{font-size:25px;font-weight:650;margin:18px 0 6px}.account-tile strong{font-size:13px;font-weight:650}.invoice-list{padding:0 22px 8px}.invoice-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:17px;align-items:center;padding:17px 0;border-top:1px solid var(--line)}.invoice-row strong{font-size:12px;font-weight:650}.invoice-row .money{font-size:14px}.invoice-row .btn{min-height:38px;padding:7px 13px;font-size:11px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.settings-card{padding:25px}.settings-card h2{font-weight:650;font-size:15px;margin-bottom:8px}.settings-card p{font-size:12px;color:var(--muted);margin-bottom:17px}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;border-top:1px solid var(--line);padding:12px 0}.settings-row strong{font-size:12px;font-weight:600}.mobile-nav{display:none}.mobile-brand{display:none}.role-notice{color:#93839f;font-size:12px;padding:11px 0}.money-hidden .sensitive{filter:blur(6px);user-select:none}.money-hidden .chart-visual{visibility:hidden}
+    dialog{border:0;box-shadow:0 25px 90px #1a0f3545;border-radius:23px;padding:0;width:min(540px,calc(100% - 26px));max-height:calc(100dvh - 40px);margin:auto;background:white;color:var(--ink);overflow:auto}dialog::backdrop{background:#1c15315c;backdrop-filter:blur(5px)}.dialog-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:24px 26px 12px}.dialog-header h2{font-size:21px;letter-spacing:-.03em;font-weight:650}.dialog-header p{font-size:12px;color:var(--muted);margin-top:4px;max-width:360px}.dialog-body{padding:10px 26px 25px}.dialog-header .icon-btn{border:0;background:#f5f2f9;width:35px;height:35px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.large-money-input{position:relative}.large-money-input span{position:absolute;left:16px;top:19px;color:#afa0c2;font-size:18px}.large-money-input .input{height:67px;padding-left:49px;font-size:27px;font-weight:600;letter-spacing:-.03em;background:#fbf9ff;border-color:#e8dff3}.installment-preview{padding:13px 15px;border-radius:12px;border:1px solid #e4d9f6;background:#faf7ff;margin-bottom:18px}.installment-preview strong{font-size:13px;font-weight:650;display:block;color:var(--purple)}.installment-preview p{font-size:11px;color:#91829e;margin-top:5px}.modal-actions{display:flex;gap:10px;margin-top:22px}.modal-actions>.btn-primary{flex:1}.modal-actions .btn{font-size:13px}.toasts{position:fixed;right:25px;bottom:25px;z-index:150;display:flex;flex-direction:column;gap:10px;max-width:min(390px,calc(100vw - 30px))}.toast{border:1px solid var(--line);border-radius:14px;background:white;box-shadow:0 12px 45px #2f18452a;padding:15px 18px;display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.6}.toast>.icon{color:var(--green);width:18px;margin-top:1px}.toast.error>.icon{color:var(--red)}.consent-free{color:#a69cae;font-size:10px;line-height:1.7}.pending-line{display:flex;align-items:center;gap:9px;color:#9474ba;font-size:12px;padding:11px 0}.status-line{color:var(--muted);font-size:12px;min-height:20px}
+    @media(min-width:1500px){.page{padding:38px 48px}.topbar{padding:0 48px}.credit-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.metric-card{padding:25px 28px}}
+    @media(max-width:1170px){.sidebar{width:208px;padding:28px 15px}.main-shell{margin-left:208px}.page{padding:28px 25px}.topbar{padding:0 25px}.metrics-grid{gap:12px;grid-template-columns:1.2fr 1fr 1fr}.metric-card{padding:20px 17px}.metric-value{font-size:25px}.balance-card .metric-value{font-size:28px}.credit-grid{gap:12px}.credit-card{padding:17px}.dashboard-bottom{grid-template-columns:minmax(0,1.2fr) minmax(260px,1fr)}.heading-controls>.btn{display:none}.page-heading h1{font-size:25px}}
+    @media(max-width:920px){.sidebar{display:none}.main-shell{margin-left:0}.topbar{height:69px}.topbar .breadcrumb{display:none}.mobile-brand{display:flex;font-size:22px}.mobile-brand .brand-mark{width:31px;height:31px;border-radius:10px}.mobile-brand .brand-mark svg{width:20px}.topbar-right{gap:8px}.top-status{display:none}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:calc(68px + env(safe-area-inset-bottom));padding:4px 9px env(safe-area-inset-bottom);background:#ffffffef;border-top:1px solid var(--line);backdrop-filter:blur(12px);z-index:40;justify-content:space-around}.mobile-nav button{min-width:58px;min-height:54px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;color:#918799;font-size:9px;font-weight:600;padding:5px 12px;border-radius:11px}.mobile-nav button.active{color:var(--purple)}.mobile-nav .icon{width:20px;height:20px}.page{padding-bottom:105px}.toasts{bottom:88px;right:15px}.auth-art{padding:36px 10%}.auth-shell{grid-template-columns:.9fr 1fr}.auth-copy h1{font-size:39px}.auth-pills{gap:7px}.auth-pills span{font-size:10px}.auth-content{padding:24px}}
+    @media(max-width:680px){.auth-shell{display:block}.auth-art{display:none}.auth-content{min-height:100dvh;padding:20px 25px}.auth-mobile-brand{display:flex}.auth-top{justify-content:flex-end}.auth-form-wrap{padding:25px 0}.auth-form-wrap h2{font-size:28px}.page{padding:23px 18px 105px}.topbar{padding:0 18px;background:#fff}.topbar-right>.icon-btn:last-child{display:none}.page-heading{display:block;margin-bottom:21px}.page-heading h1{font-size:24px;letter-spacing:-.045em}.page-heading p{font-size:12px}.heading-controls{margin-top:19px;justify-content:space-between}.month-picker{width:auto}.month-picker input{width:148px}.heading-controls>.btn{display:inline-flex;min-height:44px;font-size:11px;padding:9px 12px}.heading-controls>.btn .icon{width:16px}.metrics-grid{grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}.balance-card{grid-column:1/-1;min-height:169px;padding:22px}.metric-card:not(.balance-card){min-height:162px;padding:18px 16px}.balance-card .metric-value{font-size:34px;margin-top:13px}.metric-value{font-size:23px;margin-top:13px}.metric-card .metric-top{font-size:11px}.metric-symbol{width:27px;height:27px}.metric-symbol .icon{width:16px}.metric-foot{font-size:10px;align-items:flex-start}.quick-actions{gap:9px;margin-bottom:27px;display:grid;grid-template-columns:1fr 1fr}.quick-label{display:none}.quick-actions .btn{font-size:11px;padding:9px 6px;min-height:49px}.quick-actions .btn:last-child{display:none}.credit-grid{display:flex;overflow-x:auto;padding:0 1px 12px;margin-right:-18px;margin-bottom:17px;scroll-snap-type:x mandatory;gap:13px;scroll-padding-left:1px}.credit-card{min-width:270px;scroll-snap-align:start}.credit-grid>.empty{width:calc(100% - 18px)}.credit-grid>.empty{flex-shrink:0}.credit-grid>.card:not(.credit-card){min-width:270px}.credit-grid>.credit-card:last-child{margin-right:18px}.dashboard-bottom{grid-template-columns:1fr;gap:19px}.panel-head{padding:18px 19px 12px}.transaction-row{padding:13px 19px;gap:10px}.panel-head h2{font-size:14px}.page-footer{display:block;text-align:center;margin-top:23px}.page-footer>span{display:block;margin-top:5px}.setup-banner{display:block;padding:19px}.setup-banner .btn{margin-top:14px;margin-left:0;width:100%}.accounts-grid{grid-template-columns:1fr 1fr;gap:12px}.account-tile{padding:18px}.account-tile .money{font-size:22px}.settings-grid{grid-template-columns:1fr}.invoice-row{gap:8px;grid-template-columns:minmax(0,1fr) auto}.invoice-row>.btn{grid-column:1/-1;justify-self:end;min-height:41px}.invoice-list{padding:0 19px 12px}.dialog-header{padding:23px 20px 10px}.dialog-body{padding:10px 20px 23px}.dialog-header h2{font-size:20px}.form-grid{gap:0 10px}.form-grid .field-label{font-size:11px}.form-grid .input{font-size:14px}.section-heading h2{font-size:14px}.notice{align-items:flex-start}.privacy-note{display:none}.donut-wrap{height:230px;max-width:240px}}
+    .checkbox-label{display:flex;align-items:center;gap:10px;min-height:48px;margin-bottom:12px;font-size:13px;cursor:pointer}.checkbox-label input{width:20px;height:20px;accent-color:var(--purple)}.heading-controls{flex-wrap:wrap}.metric-card,.account-tile{min-width:0}.money,.metric-value{overflow-wrap:anywhere}.account-tile strong{overflow-wrap:anywhere;min-width:0}.donut-center strong{max-width:78%;text-align:center;overflow-wrap:anywhere}.dialog-header .icon-btn{width:44px;height:44px}.credit-card .text-btn{min-height:44px}.balance-card .icon-btn{width:40px;height:40px}
+    @media(max-width:680px){.month-picker input{width:104px;font-size:11px}.month-picker button{width:36px}.form-grid .input{font-size:16px}.credit-card{min-width:270px;max-width:calc(100vw - 40px)}}
+    @media(max-width:380px){.metrics-grid,.accounts-grid{grid-template-columns:1fr}.metric-card:not(.balance-card){min-height:145px}.form-grid{grid-template-columns:1fr}.heading-controls{gap:12px}.page-heading p{max-width:265px}.month-picker input{width:125px}.heading-controls>.btn{flex:1}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Ir para o conteúdo</a>
+<noscript><p style="padding:25px">Ative o JavaScript para conectar o SisFin à sua API.</p></noscript>
+
+<div id="auth-shell" class="auth-shell">
+  <aside class="auth-art" aria-hidden="true">
+    <div class="brand"><span class="brand-mark"><svg viewBox="0 0 32 32" fill="none"><path d="M6 19h10V7h10M6 13h10v12h10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SisFin<span style="color:#c0a2e9;font-size:10px;letter-spacing:.05em;margin-left:3px">PESSOAL & FAMILIAR</span></div>
+    <div class="auth-copy"><div class="auth-symbol"><span></span><span></span><span></span><span></span><span></span></div><span class="eyebrow" style="color:#cfb6f0">Mais clareza. Mais tranquilidade.</span><h1>Seu dinheiro.<br>Seus planos.<br>Tudo conectado.</h1><p>Um lugar para cuidar das suas contas, organizar os cartões e construir o futuro em família.</p><div class="auth-pills"><span>Contas organizadas</span><span>Cartões sob controle</span><span>Finanças em família</span></div></div>
+    <div class="auth-foot">Pequenas decisões hoje. Mais possibilidades amanhã.</div>
+  </aside>
+  <div class="auth-content">
+    <div class="auth-top"><button class="connection-button" data-action="config"><span class="connection-dot"></span><span id="auth-api-label">Configurar conexão</span><i data-lucide="settings-2" class="icon" style="width:13px;height:13px"></i></button></div>
+    <div class="auth-form-wrap">
+      <div class="brand auth-mobile-brand"><span class="brand-mark"><svg viewBox="0 0 32 32" fill="none"><path d="M6 19h10V7h10M6 13h10v12h10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SisFin</div>
+      <section id="login-screen">
+        <span class="eyebrow" style="color:#9a81b5">Bem-vindo ao seu espaço</span>
+        <h2 id="auth-title">Que bom ter você aqui.</h2><p id="auth-subtitle" class="auth-subtitle">Entre para acompanhar sua vida financeira.</p>
+        <div class="auth-tabs" role="tablist" aria-label="Acesso"><button id="login-tab" role="tab" aria-selected="true" class="auth-tab active" data-action="auth-login">Entrar</button><button id="register-tab" role="tab" aria-selected="false" class="auth-tab" data-action="auth-register">Criar conta</button></div>
+        <form id="auth-form">
+          <div id="auth-error" class="form-error" role="alert" hidden></div>
+          <div id="auth-name-field" class="form-field" hidden><label class="field-label" for="auth-name">Como você se chama?</label><input class="input" id="auth-name" name="name" autocomplete="name" maxlength="120" placeholder="Seu nome"></div>
+          <div class="form-field"><label class="field-label" for="auth-email">E-mail</label><input class="input" id="auth-email" name="email" type="email" autocomplete="username" required placeholder="voce@exemplo.com"></div>
+          <div class="form-field"><label class="field-label" for="auth-password">Senha</label><div class="password-wrap"><input class="input" id="auth-password" name="password" type="password" autocomplete="current-password" required placeholder="Sua senha"><button type="button" class="password-toggle" aria-label="Mostrar senha" data-action="toggle-password"><i data-lucide="eye" class="icon"></i></button></div><p id="password-hint" class="hint" hidden>Use pelo menos 12 caracteres, até 72 bytes.</p></div>
+          <button id="auth-submit" type="submit" class="btn btn-primary w-full" style="margin-top:5px">Entrar na minha conta<i data-lucide="arrow-right" class="icon" style="width:17px"></i></button>
+          <p class="hint" style="text-align:center;margin-top:18px">Suas finanças, no seu ritmo.</p>
+        </form>
+      </section>
+      <section id="family-screen" hidden>
+        <span class="eyebrow" style="color:#9a81b5">Seu espaço financeiro</span><h2>Vamos organizar juntos?</h2><p class="auth-subtitle">Escolha uma família ou crie seu espaço pessoal.</p>
+        <div id="family-error" class="form-error" role="alert" hidden></div>
+        <div id="family-options"></div>
+        <button class="btn btn-light w-full" data-action="families">Atualizar lista de famílias</button>
+        <button class="btn btn-primary w-full" data-action="new-family" style="margin-top:12px"><i data-lucide="plus" class="icon"></i>Criar uma família</button>
+        <button class="btn btn-text w-full" data-action="logout" style="margin-top:8px">Voltar para o login</button>
+      </section>
+      <div id="session-loading" class="pending-line" hidden><span class="spinner"></span>Conectando ao seu espaço…</div>
+      <p id="auth-slow-notice" class="hint" role="status" hidden>A API pode estar iniciando após um período em repouso. Aguarde a primeira conexão.</p>
+    </div>
+    <div class="auth-bottom">SisFin · Clareza para cuidar do que importa.</div>
+  </div>
+</div>
+
+<div id="app-shell" hidden>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark"><svg viewBox="0 0 32 32" fill="none"><path d="M6 19h10V7h10M6 13h10v12h10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SisFin<span style="width:5px;height:5px;background:#a278e0;border-radius:50%;align-self:flex-end;margin-bottom:8px"></span></div>
+    <button class="workspace-selector" data-action="families" aria-label="Trocar família"><span class="family-avatar"><i data-lucide="users" class="icon" style="width:16px"></i></span><span class="min-w-0 flex-1"><strong id="sidebar-family">Minha família</strong><small>ESPAÇO COMPARTILHADO</small></span><i data-lucide="chevrons-up-down" class="icon" style="width:13px"></i></button>
+    <p class="nav-label">Seu dinheiro</p>
+    <nav aria-label="Navegação principal">
+      <button class="nav-button active" data-action="navigate" data-view="dashboard"><i data-lucide="layout-dashboard" class="icon"></i>Visão geral</button>
+      <button class="nav-button" data-action="navigate" data-view="transactions"><i data-lucide="arrow-left-right" class="icon"></i>Movimentações</button>
+      <button class="nav-button" data-action="navigate" data-view="accounts"><i data-lucide="wallet-cards" class="icon"></i>Contas e cartões</button>
+      <button class="nav-button" data-action="navigate" data-view="settings"><i data-lucide="sliders-horizontal" class="icon"></i>Preferências</button>
+    </nav>
+    <div class="sidebar-note"><i data-lucide="sparkles" class="icon" style="color:#af82ec"></i><strong>Um passo de cada vez.</strong><p>Organizar o presente abre espaço para seus próximos planos.</p></div>
+    <div class="profile"><span id="sidebar-avatar" class="avatar">SF</span><div><strong id="sidebar-name">Minha conta</strong><small id="sidebar-role">Administrador</small></div><button class="logout" data-action="logout" aria-label="Sair deste dispositivo"><i data-lucide="log-out" class="icon" style="width:17px"></i></button></div>
+  </aside>
+  <div class="main-shell">
+    <header class="topbar">
+      <div class="breadcrumb">Meu dinheiro<i data-lucide="chevron-right" class="icon" style="width:12px"></i><strong id="breadcrumb-view">Visão geral</strong></div>
+      <button class="brand mobile-brand" data-action="navigate" data-view="dashboard" aria-label="SisFin, início"><span class="brand-mark"><svg viewBox="0 0 32 32" fill="none"><path d="M6 19h10V7h10M6 13h10v12h10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SisFin</button>
+      <div class="topbar-right"><div class="top-status"><span id="connection-status-dot"></span><span id="connection-status">Conectando</span></div><button class="icon-btn" data-action="refresh" aria-label="Atualizar dados"><i data-lucide="refresh-cw" class="icon" style="width:17px"></i></button><button class="avatar" id="header-avatar" data-action="families" aria-label="Selecionar família">SF</button><button class="icon-btn" data-action="config" aria-label="Configurar API"><i data-lucide="settings-2" class="icon" style="width:17px"></i></button></div>
+    </header>
+    <main id="main-content" class="page">
+      <div class="page-heading"><div><h1 id="page-title">Seu dinheiro, com clareza.</h1><p id="page-subtitle">Tudo o que importa para o seu mês, em um só lugar.</p></div><div class="heading-controls"><div class="month-picker"><button data-action="month-prev" aria-label="Mês anterior"><i data-lucide="chevron-left" class="icon"></i></button><input id="month-input" type="month" aria-label="Mês de referência"><button data-action="month-next" aria-label="Próximo mês"><i data-lucide="chevron-right" class="icon"></i></button></div><button class="btn btn-primary" data-action="expense" data-write><i data-lucide="plus" class="icon" style="width:17px"></i>Nova despesa</button></div></div>
+      <div id="page-alert" class="notice error" role="alert" hidden><span id="page-alert-text"></span><button class="btn btn-text" data-action="refresh">Tentar novamente</button></div>
+      <div id="slow-notice" class="notice" role="status" hidden><span><span class="spinner" style="vertical-align:middle;margin-right:7px"></span>A API pode estar iniciando. A primeira conexão pode levar um pouco mais.</span></div>
+      <div id="viewer-note" class="role-notice" hidden>Você tem acesso de visualização a esta família.</div>
+      <div id="setup-banner" class="setup-banner" hidden><div><span class="tag tag-purple" style="margin-bottom:8px">VAMOS COMEÇAR</span><h3>Seu primeiro passo: adicionar uma conta.</h3><p>Registre o saldo atual para começar a acompanhar seu dinheiro.</p></div><button class="btn btn-primary" data-action="new-account" data-write><i data-lucide="plus" class="icon" style="width:16px"></i>Adicionar conta</button></div>
+
+      <section id="view-dashboard" data-section="dashboard">
+        <div class="metrics-grid">
+          <article class="card metric-card balance-card"><div class="metric-top"><span>Saldo total nas contas</span><button class="icon-btn" data-action="privacy" aria-label="Ocultar valores" id="privacy-button"><i data-lucide="eye" class="icon"></i></button></div><div id="metric-balance" class="metric-value money sensitive"><span class="skeleton"></span></div><div class="metric-foot"><i data-lucide="wallet" class="icon" style="width:13px"></i><span id="metric-account-count">Carregando suas contas</span></div></article>
+          <article class="card metric-card"><div class="metric-top"><span>Despesas do mês</span><span class="metric-symbol" style="color:#9b729d;background:#f7edf6"><i data-lucide="arrow-up-right" class="icon" style="width:18px"></i></span></div><div id="metric-expense" class="metric-value money sensitive"><span class="skeleton"></span></div><div class="metric-foot"><span class="tag tag-purple" style="font-size:9px">COMPETÊNCIA</span><span>Compras reconhecidas no mês</span></div></article>
+          <article class="card metric-card"><div class="metric-top"><span>Faturas a pagar</span><span class="metric-symbol" style="color:#b48b49;background:#fbf3e9"><i data-lucide="credit-card" class="icon" style="width:18px"></i></span></div><div id="metric-invoices" class="metric-value money sensitive"><span class="skeleton"></span></div><div class="metric-foot"><span id="metric-invoice-count">Vencimentos do mês selecionado</span></div></article>
+        </div>
+        <div class="quick-actions"><span class="quick-label">Acesso rápido</span><button class="btn" data-action="income" data-write><i data-lucide="circle-plus" class="icon"></i>Nova receita</button><button class="btn" data-action="payment" data-write><i data-lucide="scan-line" class="icon"></i>Pagar fatura</button><button class="btn" data-action="new-card" data-write><i data-lucide="credit-card" class="icon"></i>Adicionar cartão</button></div>
+        <div class="section-heading"><div><h2>Seus cartões</h2><p class="section-sub">Faturas do mês e limite comprometido</p></div><button class="text-btn" data-action="navigate" data-view="accounts">Ver todos <span aria-hidden="true">↗</span></button></div>
+        <div id="dashboard-cards" class="credit-grid" aria-live="polite"><div class="card credit-card loading-sheen"><span class="skeleton"></span><span class="skeleton" style="margin-top:33px;width:85px"></span></div></div>
+        <div class="dashboard-bottom">
+          <section class="card"><div class="panel-head"><div><h2>Últimas movimentações</h2><p id="recent-caption">Acompanhe o que aconteceu no mês</p></div><button class="text-btn" data-action="navigate" data-view="transactions">Ver extrato</button></div><div id="recent-transactions" aria-live="polite"><div class="empty">Carregando movimentações…</div></div></section>
+          <section class="card"><div class="panel-head"><div><h2>Para onde foi seu dinheiro?</h2><p>Despesas por categoria neste mês</p></div><span class="tag tag-gray" id="chart-month">Mês</span></div><div id="chart-content"><div class="empty">Carregando categorias…</div></div></section>
+        </div>
+      </section>
+
+      <section id="view-transactions" data-section="transactions" hidden><div class="card"><div class="panel-head"><div><h2>Seu extrato</h2><p>Fatos econômicos e liquidações identificados separadamente</p></div><span id="tx-count" class="tag tag-gray"></span></div><div id="full-transactions"></div><div style="padding:15px;text-align:center"><button id="load-more-transactions" class="btn btn-light" data-action="more-transactions">Carregar mais</button></div></div></section>
+      <section id="view-accounts" data-section="accounts" hidden>
+        <div class="section-heading"><h2>Suas contas</h2><button class="text-btn" data-action="new-account" data-write>+ Adicionar conta</button></div><div id="accounts-list" class="accounts-grid"></div>
+        <div class="section-heading"><div><h2>Cartões de crédito</h2><p class="section-sub">Limite disponível considera também as parcelas futuras</p></div><button class="text-btn" data-action="new-card" data-write>+ Adicionar cartão</button></div><div id="all-cards" class="credit-grid"></div>
+        <div class="card"><div class="panel-head"><div><h2>Faturas e próximos vencimentos</h2><p>Inclui faturas futuras e vencidas com saldo em aberto</p></div></div><div id="invoices-list" class="invoice-list"></div></div>
+      </section>
+      <section id="view-settings" data-section="settings" hidden><div class="settings-grid">
+        <article class="card settings-card"><span class="metric-symbol" style="background:var(--purple-soft);color:var(--purple);margin-bottom:16px"><i data-lucide="users" class="icon"></i></span><h2>Seu espaço em família</h2><p id="settings-family-text">Organização compartilhada com quem importa.</p><button class="btn btn-light w-full" data-action="families">Selecionar outra família<i data-lucide="chevron-right" class="icon" style="width:15px"></i></button><button class="btn btn-text w-full" data-action="new-family">Criar uma família</button></article>
+        <article class="card settings-card"><span class="metric-symbol" style="background:#eaf7f1;color:var(--green);margin-bottom:16px"><i data-lucide="network" class="icon"></i></span><h2>Conexão com sua API</h2><p id="settings-api-text" style="overflow-wrap:anywhere"></p><button class="btn btn-light w-full" data-action="config">Configurar URL da API<i data-lucide="settings-2" class="icon" style="width:15px"></i></button><p class="hint" style="margin-top:12px">A senha do banco permanece somente no servidor.</p></article>
+        <article class="card settings-card"><h2>Cadastros do seu dia a dia</h2><p>Prepare suas contas, cartões e categorias.</p><div class="settings-row"><strong>Conta bancária ou carteira</strong><button class="text-btn" data-action="new-account" data-write>Adicionar</button></div><div class="settings-row"><strong>Cartão de crédito</strong><button class="text-btn" data-action="new-card" data-write>Adicionar</button></div><div class="settings-row"><strong>Categoria de receita ou despesa</strong><button class="text-btn" data-action="new-category" data-write>Adicionar</button></div></article>
+        <article class="card settings-card"><h2>Sua conta</h2><p id="settings-user-text"></p><button class="btn btn-light w-full" data-action="logout"><i data-lucide="log-out" class="icon" style="width:17px"></i>Sair deste dispositivo</button><button class="btn btn-text w-full" data-action="logout-all" style="color:var(--red)">Sair de todos os dispositivos</button><p class="consent-free">A sessão fica salva neste navegador. Use “Sair” quando terminar em um dispositivo compartilhado.</p></article>
+      </div></section>
+      <footer class="page-footer"><span class="flex items-center" style="gap:5px"><i data-lucide="shield-check" class="icon"></i><span>SisFin · Cada movimento, no seu lugar.</span></span><span id="last-updated">Aguardando atualização</span></footer>
+    </main>
+  </div>
+  <nav class="mobile-nav" aria-label="Navegação no celular"><button class="active" data-action="navigate" data-view="dashboard"><i data-lucide="layout-dashboard" class="icon"></i>Início</button><button data-action="navigate" data-view="transactions"><i data-lucide="arrow-left-right" class="icon"></i>Extrato</button><button data-action="navigate" data-view="accounts"><i data-lucide="wallet-cards" class="icon"></i>Contas</button><button data-action="navigate" data-view="settings"><i data-lucide="sliders-horizontal" class="icon"></i>Ajustes</button></nav>
+</div>
+
+<dialog id="dialog" aria-labelledby="dialog-title" aria-describedby="dialog-subtitle">
+  <div class="dialog-header"><div><h2 id="dialog-title"></h2><p id="dialog-subtitle"></p></div><button class="icon-btn" type="button" data-action="close-dialog" aria-label="Fechar janela"><i data-lucide="x" class="icon" style="width:18px"></i></button></div>
+  <div class="dialog-body"><div id="dialog-error" class="form-error" role="alert" hidden></div><form id="dialog-form"><div id="dialog-fields"></div><div id="dialog-pending" class="pending-line" hidden><span class="spinner"></span>Confirmando sua operação…</div><div class="modal-actions"><button class="btn btn-light" type="button" data-action="close-dialog">Cancelar</button><button id="dialog-submit" class="btn btn-primary" type="submit">Salvar</button></div></form></div>
+</dialog>
+<div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+<script>
+/* SisFin SPA. Todos os cálculos monetários usam centavos BigInt.
+   A conversão para Number existe somente na geometria do gráfico e das barras. */
+(() => {
+  'use strict';
+  const DEFAULT_API_BASE = /^https?:$/.test(location.protocol) ? location.origin : 'http://localhost:8000';
+  const STORAGE = {api:'sisfin.apiBaseUrl', token:'sisfin.token', family:'sisfin.familyId', bound:'sisfin.sessionApiBase', pending:'sisfin.pendingWrites'};
+  const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+  const text = (selector, value) => { $(selector).textContent = value; };
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const icon = (name) => '<i data-lucide="' + esc(name) + '" class="icon" aria-hidden="true"></i>';
+  const icons = () => { if (window.lucide) window.lucide.createIcons(); };
+  const memory = new Map();
+  const storage = {
+    get(key) { try { return localStorage.getItem(key); } catch { return memory.get(key) || null; } },
+    set(key,value) { memory.set(key,value); try { localStorage.setItem(key,value); } catch { /* Sessão em memória quando o navegador bloqueia persistência. */ } },
+    remove(key) { memory.delete(key); try { localStorage.removeItem(key); } catch {} }
+  };
+  function normalizeBase(value) {
+    const url = new URL(value.trim());
+    if (!['http:','https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash) {
+      throw new Error('Use uma URL HTTP(S) da API, sem senha, consulta ou fragmento.');
+    }
+    if (location.protocol === 'https:' && url.protocol === 'http:') throw new Error('Nesta página HTTPS, configure uma API também em HTTPS.');
+    return url.href.replace(/\/+$/, '');
+  }
+  let base;
+  try { base = normalizeBase(storage.get(STORAGE.api) || DEFAULT_API_BASE); }
+  catch { base = DEFAULT_API_BASE; }
+  let token = storage.get(STORAGE.token) || '';
+  if (storage.get(STORAGE.bound) !== base) token = '';
+  const state = {base, token, user:null, families:[], family:null, month:'', loadedMonth:'', view:'dashboard', ready:false,
+    accounts:[], cards:[], categories:[], invoices:[], transactions:[], economic:null, hasMore:false, epoch:0, chart:null, authMode:'login'};
+  let modal = null;
+  let authBusy = false;
+  let pendingRequests = 0;
+  let slowTimer;
+  let pendingWrites = {};
+  try { pendingWrites = JSON.parse(sessionStorage.getItem(STORAGE.pending) || '{}'); } catch {}
+  const roleName = {admin:'Administrador',editor:'Editor',viewer:'Visualizador'};
+  const accountName = {checking:'Conta corrente',savings:'Poupança',cash:'Dinheiro',investment:'Investimentos',wallet:'Carteira'};
+  const invoiceName = {open:'Aberta',closed:'Fechada',partially_paid:'Pagamento parcial',paid:'Paga',overdue:'Vencida'};
+  const colors = ['#7640c9','#b694e9','#e9a987','#7eb9ad','#9dadd5','#d68bb6','#c7b56a','#b9a5cb'];
+  function decimalToCents(value) {
+    if (typeof value !== 'string' || !/^-?\d+(?:\.\d{1,2})?$/.test(value)) throw new Error('A API retornou um valor monetário inválido.');
+    const negative = value.startsWith('-');
+    const parts = value.replace(/^-/, '').split('.');
+    return (negative ? -1n : 1n) * (BigInt(parts[0]) * 100n + BigInt((parts[1] || '').padEnd(2,'0')));
+  }
+  function toDecimal(value) {
+    const sign = value < 0n ? '-' : '';
+    const v = value < 0n ? -value : value;
+    return sign + (v / 100n).toString() + '.' + (v % 100n).toString().padStart(2,'0');
+  }
+  function inputToCents(value, allowZero=false) {
+    let raw = String(value).trim().replace(/^R\$\s*/, '');
+    if (/^\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?$/.test(raw)) raw = raw.replace(/\./g,'').replace(',','.');
+    else if (/^\d+(?:,\d{1,2})?$/.test(raw)) raw = raw.replace(',','.');
+    else if (!/^\d+\.\d{1,2}$/.test(raw)) throw new Error('Informe um valor como 150,00, com até duas casas decimais.');
+    const cents = decimalToCents(raw);
+    if (cents < 0n || (!allowZero && cents === 0n) || cents > 999999999999n) throw new Error('Informe um valor ' + (allowZero ? 'a partir de zero' : 'maior que zero') + ', até R$ 9.999.999.999,99.');
+    return cents;
+  }
+  function money(cents) {
+    const abs = cents < 0n ? -cents : cents;
+    return (cents < 0n ? '− ' : '') + 'R$ ' + new Intl.NumberFormat('pt-BR').format(abs / 100n) + ',' + (abs % 100n).toString().padStart(2,'0');
+  }
+  const amount = (value) => money(decimalToCents(value));
+  const formMoney = (value) => toDecimal(value).replace('.',',');
+  function splitCents(total, count) {
+    if (!Number.isInteger(count) || count < 1 || count > 600 || total < BigInt(count)) throw new Error('Use entre 1 e 600 parcelas, com pelo menos R$ 0,01 em cada uma.');
+    const n = BigInt(count), q = total / n, r = total % n;
+    return Array.from({length:count}, (_,i) => q + (BigInt(i) < r ? 1n : 0n));
+  }
+  function today() {
+    const parts = new Intl.DateTimeFormat('en-CA',{timeZone:state.family?.timezone || 'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const p = Object.fromEntries(parts.map(x => [x.type,x.value]));
+    return p.year + '-' + p.month + '-' + p.day;
+  }
+  const dateLabel = (value) => value ? new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',timeZone:'UTC'}).format(new Date(value.slice(0,10)+'T12:00:00Z')) : '—';
+  const monthLabel = (value) => new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(value+'-01T12:00:00Z'));
+  function monthRange(month) {
+    const [y,m] = month.split('-').map(Number);
+    const last = new Date(Date.UTC(y,m,0)).getUTCDate();
+    return {start:month+'-01',end:month+'-'+String(last).padStart(2,'0')};
+  }
+  function context() { return {base:state.base,token:state.token,family:state.family?.id || ''}; }
+  function sameContext(ctx) { const now=context(); return ctx.base===now.base && ctx.token===now.token && ctx.family===now.family; }
+  function errorBox(selector,message) { text(selector,message || ''); $(selector).hidden = !message; }
+  function toast(message,error=false) {
+    const node=document.createElement('div');
+    node.className='toast'+(error?' error':''); node.textContent=message;
+    $('#toasts').append(node); setTimeout(() => node.remove(),6500);
+  }
+  function requestPending(delta) {
+    pendingRequests = Math.max(0,pendingRequests+delta);
+    if (pendingRequests && !slowTimer) slowTimer=setTimeout(() => { $('#slow-notice').hidden=false; $('#auth-slow-notice').hidden=false; },6000);
+    if (!pendingRequests) { clearTimeout(slowTimer); slowTimer=null; $('#slow-notice').hidden=true; $('#auth-slow-notice').hidden=true; }
+  }
+  function apiMessage(data,status) {
+    if (typeof data?.detail === 'string') return data.detail;
+    if (Array.isArray(data?.detail)) return data.detail.map(e => {
+      const field=(e.loc || []).filter(x => x!=='body').join(' · ');
+      return (field ? field+': ' : '')+e.msg;
+    }).join(' / ');
+    return ({401:'Sessão expirada. Entre novamente.',403:'Você não tem permissão para esta operação.',404:'Recurso não encontrado. Confira a URL e a versão da API.',409:'A operação está em conflito com os dados atuais.',429:'Muitas tentativas. Aguarde antes de tentar novamente.',503:'API ou banco temporariamente indisponível. Aguarde e tente novamente.'})[status] || 'Não foi possível concluir a operação (HTTP '+status+').';
+  }
+  async function api(path, options={}) {
+    const ctx=options.ctx || context(), method=options.method || 'GET';
+    const headers={Accept:'application/json'};
+    if (!options.public && ctx.token) headers.Authorization='Bearer '+ctx.token;
+    if (!options.public && ctx.family) headers['X-Family-ID']=ctx.family;
+    if (['POST','PUT','PATCH','DELETE'].includes(method)) {
+      if (!crypto.randomUUID) throw new Error('Abra a interface por HTTPS ou localhost para realizar operações.');
+      headers['Idempotency-Key']=options.key || crypto.randomUUID();
+    }
+    let body;
+    if (options.body instanceof URLSearchParams) { body=options.body; headers['Content-Type']='application/x-www-form-urlencoded'; }
+    else if (options.body !== undefined) { body=JSON.stringify(options.body); headers['Content-Type']='application/json'; }
+    const controller=new AbortController(), timer=setTimeout(() => controller.abort(),90000);
+    requestPending(1);
+    try {
+      const response=await fetch(ctx.base+path,{method,headers,body,signal:controller.signal,credentials:'omit',redirect:'error',cache:'no-store'});
+      let data;
+      try { data=await response.json(); } catch {
+        throw new Error('A URL não retornou JSON. Confira se ela aponta para a API SisFin.');
+      }
+      if (!response.ok) {
+        const error=new Error(apiMessage(data,response.status)); error.status=response.status;
+        if (response.status===401 && !options.public && sameContext(ctx)) signOut('Sua sessão expirou. Entre novamente.');
+        throw error;
+      }
+      return data;
+    } catch (error) {
+      if (error.name==='AbortError' || error instanceof TypeError) {
+        const write=method!=='GET';
+        const message=error.name==='AbortError'?'A conexão demorou mais que o esperado.':'Não foi possível conectar. Confira a URL da API e sua conexão.';
+        const wrapped=new Error(message+(write?' A operação ficou sem confirmação. Consulte os dados antes de repetir; o formulário preserva a chave de idempotência.':' A API gratuita pode estar iniciando; aguarde e tente novamente.'));
+        wrapped.uncertain=write; throw wrapped;
+      }
+      throw error;
+    } finally { clearTimeout(timer); requestPending(-1); }
+  }
+  function savePending() { try { sessionStorage.setItem(STORAGE.pending,JSON.stringify(pendingWrites)); } catch {} }
+  async function write(path,body,{noFamily=false}={}) {
+    const ctx=context();
+    if (!crypto.subtle || !crypto.randomUUID) throw new Error('Use HTTPS ou localhost para realizar operações.');
+    const fingerprint=JSON.stringify([ctx.base,state.user?.id || '',noFamily?'':ctx.family,path,body]);
+    const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(fingerprint)))).map(v=>v.toString(16).padStart(2,'0')).join('');
+    const key=pendingWrites[hash] || crypto.randomUUID();
+    pendingWrites[hash]=key; savePending();
+    try {
+      const result=await api(path,{method:'POST',body,key,ctx,noFamily});
+      delete pendingWrites[hash]; savePending(); return result;
+    } catch(error) {
+      // Mantém a chave em falhas de transporte/servidor; não reenvia automaticamente.
+      if (error.status && error.status<500 && error.status!==409) { delete pendingWrites[hash]; savePending(); }
+      throw error;
+    }
+  }
+  async function allPages(path,ctx) {
+    const rows=[];
+    for (let page=0;page<100;page++) {
+      const result=await api(path+'?limit=200&offset='+(page*200),{ctx});
+      if (!Array.isArray(result)) throw new Error('A API retornou uma lista em formato inesperado.');
+      rows.push(...result);
+      if (result.length<200) return rows;
+    }
+    throw new Error('Volume acima do limite de carregamento da interface. Nenhum total parcial foi exibido.');
+  }
+  function resetData() {
+    state.epoch++; state.ready=false;
+    ['accounts','cards','categories','invoices','transactions'].forEach(k=>{state[k]=[];});
+    state.economic=null; state.hasMore=false;
+    if (state.chart) { state.chart.destroy(); state.chart=null; }
+    ['#metric-balance','#metric-expense','#metric-invoices'].forEach(s=>text(s,'—'));
+    ['#dashboard-cards','#recent-transactions','#full-transactions','#all-cards','#accounts-list','#invoices-list','#chart-content'].forEach(s=>{$(s).innerHTML='<div class="empty">Carregando seu espaço…</div>';});
+    text('#metric-account-count','Aguardando atualização'); text('#metric-invoice-count','Vencimentos do mês selecionado');
+    text('#last-updated','Aguardando atualização'); $('#setup-banner').hidden=true;
+  }
+  function authMode(mode) {
+    state.authMode=mode; const registration=mode==='register';
+    $('#auth-name-field').hidden=!registration; $('#auth-name').required=registration;
+    $('#password-hint').hidden=!registration;
+    $('#auth-password').autocomplete=registration?'new-password':'current-password';
+    $('#auth-password').minLength=registration?12:1;
+    text('#auth-title',registration?'Um novo começo.':'Que bom ter você aqui.');
+    text('#auth-subtitle',registration?'Crie sua conta e dê espaço aos seus planos.':'Entre para acompanhar sua vida financeira.');
+    text('#auth-submit',registration?'Criar minha conta':'Entrar na minha conta');
+    ['login','register'].forEach(m=>{ $('#'+m+'-tab').classList.toggle('active',m===mode); $('#'+m+'-tab').setAttribute('aria-selected',String(m===mode)); });
+    errorBox('#auth-error','');
+  }
+  function signOut(message='',clearStorage=true) {
+    state.token=''; state.family=null; state.user=null; state.families=[]; resetData();
+    if (clearStorage) { storage.remove(STORAGE.token); storage.remove(STORAGE.family); storage.remove(STORAGE.bound); }
+    // Digest/chave sem valores financeiros; preservados para reconciliar uma operação sem confirmação após novo login.
+    if ($('#dialog').open) $('#dialog').close(); modal=null;
+    $('#auth-shell').hidden=false; $('#app-shell').hidden=true; $('#login-screen').hidden=false; $('#family-screen').hidden=true;
+    $('#session-loading').hidden=true; $('#auth-password').value='';
+    errorBox('#auth-error',message);
+  }
+  async function loadSession() {
+    $('#session-loading').hidden=false;
+    const ctx=context();
+    try {
+      const [user,families]=await Promise.all([api('/auth/me',{ctx,noFamily:true}),api('/auth/families',{ctx,noFamily:true})]);
+      if (ctx.base!==state.base || ctx.token!==state.token) return;
+      state.user=user; state.families=families;
+      const preferred=families.find(f=>f.id===storage.get(STORAGE.family));
+      if (preferred || families.length===1) await chooseFamily((preferred || families[0]).id);
+      else showFamilies();
+    } finally { $('#session-loading').hidden=true; }
+  }
+  function showFamilies() {
+    state.family=null; storage.remove(STORAGE.family); resetData();
+    $('#app-shell').hidden=true; $('#auth-shell').hidden=false; $('#login-screen').hidden=true; $('#family-screen').hidden=false;
+    errorBox('#family-error','');
+    $('#family-options').innerHTML=state.families.length ? state.families.map(f=>
+      '<button class="family-option" data-action="select-family" data-id="'+esc(f.id)+'"><span class="family-avatar">'+esc(f.name.slice(0,2).toUpperCase())+'</span><span style="flex:1;min-width:0;overflow-wrap:anywhere"><strong>'+esc(f.name)+'</strong><span class="small muted" style="display:block">'+esc(roleName[f.role] || f.role)+'</span></span>'+icon('chevron-right')+'</button>').join('') :
+      '<div class="empty"><strong>Seu espaço começa aqui.</strong><p>Crie uma família para organizar suas finanças, mesmo que seja só você.</p></div>';
+    icons();
+  }
+  async function chooseFamily(id) {
+    const family=state.families.find(f=>f.id===id);
+    if (!family) throw new Error('Selecione uma família autorizada.');
+    resetData(); state.family=family; state.month=today().slice(0,7);
+    storage.set(STORAGE.family,id);
+    $('#auth-shell').hidden=true; $('#app-shell').hidden=false; $('#month-input').value=state.month;
+    const initials=state.user.name.trim().split(/\s+/).slice(0,2).map(p=>p[0]).join('').toUpperCase();
+    text('#sidebar-family',family.name); text('#sidebar-name',state.user.name); text('#sidebar-role',roleName[family.role]);
+    text('#sidebar-avatar',initials); text('#header-avatar',initials);
+    text('#settings-family-text',family.name+' · '+roleName[family.role]);
+    text('#settings-user-text',state.user.name+' · '+state.user.email);
+    $('#viewer-note').hidden=family.role!=='viewer'; applyRole(); navigate('dashboard'); await refresh();
+  }
+  function canWrite() { return ['admin','editor'].includes(state.family?.role); }
+  function applyRole() { $$('[data-write]').forEach(b=>{b.disabled=!canWrite() || !state.ready;}); }
+  function showApi() {
+    text('#auth-api-label',new URL(state.base).host);
+    text('#settings-api-text',state.base);
+  }
+  const views={
+    dashboard:['Visão geral','Seu dinheiro, com clareza.','Tudo o que importa para o seu mês, em um só lugar.'],
+    transactions:['Movimentações','Cada movimento conta.','Acompanhe as receitas, compras e liquidações da sua família.'],
+    accounts:['Contas e cartões','Tudo conectado.','Saldos atuais, limites e próximas faturas, sem perder de vista.'],
+    settings:['Preferências','Do seu jeito.','Seu espaço, seus cadastros e sua conexão.']
+  };
+  function navigate(view) {
+    if (!views[view]) return;
+    state.view=view;
+    $$('[data-section]').forEach(s=>{s.hidden=s.dataset.section!==view;});
+    $$('[data-action="navigate"]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+    text('#breadcrumb-view',views[view][0]); text('#page-title',views[view][1]); text('#page-subtitle',views[view][2]);
+    $('#month-input').parentElement.hidden=view==='settings';
+    if (view==='dashboard' && state.chart) state.chart.resize();
+  }
+  async function refresh() {
+    if (!state.family) return;
+    const epoch=++state.epoch,ctx=context(),range=monthRange(state.month);
+    text('#connection-status','Atualizando'); $('#connection-status-dot').style.background='#d8a151';
+    errorBox('#page-alert-text',''); $('#page-alert').hidden=true;
+    try {
+      const [accounts,cards,categories,invoices,transactions,economic]=await Promise.all([
+        allPages('/accounts',ctx),allPages('/cards',ctx),allPages('/categories',ctx),allPages('/invoices',ctx),
+        api('/transactions?'+new URLSearchParams({...range,limit:'20',offset:'0'}),{ctx}),
+        api('/reports/economic?'+new URLSearchParams(range),{ctx})
+      ]);
+      if (epoch!==state.epoch || !sameContext(ctx)) return;
+      // Valida valores antes de trocar os dados em tela. Um erro nunca vira saldo zero.
+      accounts.forEach(a=>decimalToCents(a.balance));
+      cards.forEach(c=>['credit_limit','used_limit','available_limit'].forEach(k=>decimalToCents(c[k])));
+      invoices.forEach(i=>decimalToCents(i.outstanding));
+      transactions.forEach(t=>decimalToCents(t.amount)); decimalToCents(economic.expense);
+      economic.categories.forEach(c=>decimalToCents(c.amount));
+      Object.assign(state,{accounts,cards,categories,invoices,transactions,economic,hasMore:transactions.length===20,ready:true,loadedMonth:state.month});
+      render(); text('#connection-status','Atualizado'); $('#connection-status-dot').style.background='#58b995';
+      text('#last-updated','Atualizado às '+new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit'}).format(new Date()));
+    } catch(error) {
+      if (epoch!==state.epoch || !sameContext(ctx)) return;
+      text('#connection-status','Sem atualização'); $('#connection-status-dot').style.background='#c4566c';
+      text('#page-alert-text',error.message+(state.ready?' Os dados exibidos são da última atualização confirmada, com referência em '+monthLabel(state.loadedMonth)+'.':' Nenhum total foi calculado.'));
+      $('#page-alert-text').hidden=false; $('#page-alert').hidden=false;
+    }
+    applyRole();
+  }
+  function empty(title,description,action,label) {
+    return '<div class="empty" style="grid-column:1/-1"><span class="empty-icon">'+icon('inbox')+'</span><strong>'+esc(title)+'</strong><p>'+esc(description)+'</p>'+(action?'<button class="btn btn-soft" data-write data-action="'+esc(action)+'">'+esc(label)+'</button>':'')+'</div>';
+  }
+  function statusTag(status) {
+    const tone={paid:'green',open:'purple',closed:'gray',partially_paid:'amber',overdue:'red'};
+    return '<span class="tag tag-'+(tone[status] || 'gray')+'">'+esc(invoiceName[status] || status)+'</span>';
+  }
+  function cardHTML(card) {
+    const monthInvoices=state.invoices.filter(i=>i.card_id===card.id && i.due_date.startsWith(state.month));
+    const pending=monthInvoices.reduce((v,i)=>v+decimalToCents(i.outstanding),0n);
+    const due=monthInvoices.find(i=>decimalToCents(i.outstanding)>0n) || monthInvoices[0];
+    const used=decimalToCents(card.used_limit),limit=decimalToCents(card.credit_limit);
+    const percent=limit>0n?Math.max(0,Math.min(100,Number(used*10000n/limit)/100)):0;
+    return '<article class="card credit-card"><div class="credit-header"><span class="credit-logo">'+icon('credit-card')+'</span><div style="min-width:0;flex:1"><strong>'+esc(card.name)+'</strong><small style="display:block">Crédito'+(card.last_four?' · final '+esc(card.last_four):'')+'</small></div>'+(due?statusTag(due.status):'<span class="tag tag-gray">Sem fatura</span>')+'</div><div class="credit-amount"><div><p class="credit-caption">Fatura a pagar no mês</p><p class="money sensitive">'+money(pending)+'</p></div><span class="small muted">'+(due?'Vence '+esc(dateLabel(due.due_date)):'—')+'</span></div><div class="credit-progress" aria-label="'+esc(money(used))+' de limite utilizado"><span style="width:'+percent+'%"></span></div><div class="credit-bottom"><span>Disponível <strong class="sensitive">'+amount(card.available_limit)+'</strong></span><span>Total <span class="sensitive">'+money(limit)+'</span></span></div>'+(due && pending>0n?'<button class="text-btn" data-write data-action="payment" data-id="'+esc(due.id)+'">Pagar fatura'+icon('arrow-up-right')+'</button>':'<button class="text-btn" data-write data-action="expense" data-card="'+esc(card.id)+'">Lançar uma compra'+icon('plus')+'</button>')+'</article>';
+  }
+  function transactionHTML(tx) {
+    const purpose=tx.details?.purpose;
+    const transfer=tx.kind==='transfer',positive=['income','reimbursement','reversal'].includes(tx.kind);
+    const kind={income:'Receita',expense:'Despesa',transfer:'Transferência',reimbursement:'Reembolso',reversal:'Estorno',adjustment:'Ajuste'}[tx.kind] || tx.kind;
+    const label=purpose==='invoice_payment'?'Pagamento de fatura':purpose==='cash_settlement'?'Liquidação em conta':kind;
+    const category=state.categories.find(c=>c.id===tx.category_id)?.name;
+    const source=state.cards.find(c=>c.id===tx.card_id)?.name || state.accounts.find(a=>a.id===tx.account_id)?.name;
+    const status=tx.status==='planned'?' · Prevista':tx.status==='cancelled'?' · Cancelada':'';
+    const sub=[label,category,source].filter(Boolean).join(' · ')+status;
+    return '<div class="transaction-row"><span class="tx-icon"'+(positive?' style="color:#167d64;background:#eaf7f1"':'')+'>'+icon(transfer?'arrow-left-right':positive?'arrow-down-left':'arrow-up-right')+'</span><div style="min-width:0"><p class="tx-title" title="'+esc(tx.description)+'">'+esc(tx.description)+'</p><p class="tx-sub" title="'+esc(sub)+'">'+esc(sub)+'</p></div><div class="tx-value sensitive '+(transfer?'tx-neutral':positive?'tx-income':'')+'">'+(transfer?'':positive?'+ ':'− ')+amount(tx.amount)+'<div class="tx-date">'+esc(dateLabel(transfer?tx.paid_date || tx.competency_date:tx.competency_date))+'</div></div></div>';
+  }
+  function renderTransactions() {
+    const rows=state.transactions.map(transactionHTML);
+    const placeholder=empty('Seu extrato começa aqui.','Os lançamentos deste mês aparecerão neste espaço.','expense','Registrar despesa');
+    $('#recent-transactions').innerHTML=rows.slice(0,6).join('') || placeholder;
+    $('#full-transactions').innerHTML=rows.join('') || placeholder;
+    text('#tx-count',rows.length+' carregadas');
+    text('#recent-caption',monthLabel(state.month)+' · por competência');
+    $('#load-more-transactions').hidden=!state.hasMore;
+    applyRole(); icons();
+  }
+  function renderChart() {
+    if (state.chart) { state.chart.destroy(); state.chart=null; }
+    const categories=state.economic.categories.filter(c=>c.kind==='expense').map(c=>({...c,cents:decimalToCents(c.amount),name:state.categories.find(x=>x.id===c.category_id)?.name || 'Sem categoria'})).filter(c=>c.cents!==0n);
+    const positive=categories.filter(c=>c.cents>0n).sort((a,b)=>a.cents>b.cents?-1:1);
+    const negative=categories.filter(c=>c.cents<0n),total=positive.reduce((n,c)=>n+c.cents,0n);
+    text('#chart-month',new Intl.DateTimeFormat('pt-BR',{month:'short',timeZone:'UTC'}).format(new Date(state.month+'-01T12:00:00Z')).replace('.',''));
+    const legend=positive.map((c,i)=>'<div class="category-line"><span class="category-dot" style="background:'+colors[i%colors.length]+'"></span><span title="'+esc(c.name)+'">'+esc(c.name)+'</span><strong class="sensitive">'+money(c.cents)+'</strong><small>'+String(c.cents*100n/total)+'%</small></div>').join('');
+    const credits=negative.length?'<p class="chart-note">Créditos líquidos por categoria, fora do gráfico: '+negative.map(c=>esc(c.name)+' <span class="sensitive">'+money(c.cents)+'</span>').join('; ')+'. Despesa líquida do mês: <span class="sensitive">'+amount(state.economic.expense)+'</span>.</p>':'';
+    if (!positive.length) { $('#chart-content').innerHTML=empty('Espaço para seus próximos planos.','Sem despesas positivas por categoria neste mês.')+credits; return; }
+    $('#chart-content').innerHTML='<div class="donut-wrap chart-visual"><canvas id="expense-chart" role="img" aria-label="Despesas positivas por categoria. Valores detalhados na legenda abaixo."></canvas><div class="donut-center"><small>Despesas'+(negative.length?' positivas':'')+'</small><strong class="sensitive">'+money(total)+'</strong></div></div><div class="category-legend">'+legend+'</div>'+credits;
+    if (!window.Chart) {
+      $('#expense-chart').hidden=true;
+      $('#chart-content').insertAdjacentHTML('beforeend','<p class="chart-note">O gráfico não carregou. Os valores completos estão na legenda.</p>');
+      return;
+    }
+    state.chart=new Chart($('#expense-chart'),{type:'doughnut',data:{labels:positive.map(c=>c.name),datasets:[{data:positive.map(c=>Number(c.cents)),backgroundColor:positive.map((_,i)=>colors[i%colors.length]),borderColor:'#fff',borderWidth:4,hoverOffset:3,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:'78%',animation:matchMedia('(prefers-reduced-motion: reduce)').matches?false:{duration:450},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.label+': '+money(positive[ctx.dataIndex].cents)}}}}});
+  }
+  function render() {
+    text('#metric-balance',money(state.accounts.reduce((n,a)=>n+decimalToCents(a.balance),0n)));
+    text('#metric-account-count','Saldo atual · '+state.accounts.length+' conta'+(state.accounts.length===1?'':'s'));
+    text('#metric-expense',amount(state.economic.expense));
+    const monthly=state.invoices.filter(i=>i.due_date.startsWith(state.month) && decimalToCents(i.outstanding)>0n);
+    const old=state.invoices.filter(i=>i.due_date<state.month+'-01' && i.due_date<today() && decimalToCents(i.outstanding)>0n);
+    text('#metric-invoices',money(monthly.reduce((n,i)=>n+decimalToCents(i.outstanding),0n)));
+    text('#metric-invoice-count',monthly.length+' fatura'+(monthly.length===1?'':'s')+' no mês'+(old.length?' · '+old.length+' vencida(s) anterior(es)':''));
+    const activeCards=state.cards.filter(c=>c.active!==false);
+    $('#dashboard-cards').innerHTML=activeCards.slice(0,3).map(cardHTML).join('') || empty('Seu cartão, sob controle.','Cadastre um cartão para acompanhar o limite e as faturas.','new-card','Adicionar cartão');
+    $('#all-cards').innerHTML=activeCards.map(cardHTML).join('') || empty('Nenhum cartão cadastrado.','Adicione seu primeiro cartão.','new-card','Adicionar cartão');
+    $('#accounts-list').innerHTML=state.accounts.map(a=>'<article class="card account-tile"><div class="flex items-center justify-between"><strong>'+esc(a.name)+'</strong>'+icon('wallet')+'</div><div class="money sensitive">'+amount(a.balance)+'</div><p class="small muted">'+esc(accountName[a.kind] || a.kind)+(a.bank?' · '+esc(a.bank):'')+(a.active===false?' · Inativa':'')+'</p></article>').join('') || empty('Uma conta para começar.','Banco, poupança, dinheiro ou carteira.','new-account','Adicionar conta');
+    const outstanding=state.invoices.filter(i=>decimalToCents(i.outstanding)>0n).sort((a,b)=>a.due_date.localeCompare(b.due_date));
+    $('#invoices-list').innerHTML=outstanding.map(i=>'<div class="invoice-row"><div><strong>'+esc(state.cards.find(c=>c.id===i.card_id)?.name || 'Cartão')+'</strong><p class="small muted">Vence '+esc(dateLabel(i.due_date))+' · '+esc(i.due_date.slice(0,4))+'</p>'+statusTag(i.status)+'</div><span class="money sensitive">'+amount(i.outstanding)+'</span><button class="btn btn-soft" data-write data-action="payment" data-id="'+esc(i.id)+'">Pagar</button></div>').join('') || empty('Nenhuma fatura em aberto.','As próximas compras aparecerão aqui.');
+    $('#setup-banner').hidden=state.accounts.length>0 || !canWrite();
+    renderTransactions(); renderChart(); showApi(); applyRole(); icons();
+  }
+  async function moreTransactions() {
+    if (!state.hasMore) return;
+    const ctx=context(),epoch=state.epoch,offset=state.transactions.length,button=$('#load-more-transactions');
+    button.disabled=true;
+    try {
+      const rows=await api('/transactions?'+new URLSearchParams({...monthRange(state.month),limit:'20',offset:String(offset)}),{ctx});
+      if (epoch!==state.epoch || !sameContext(ctx)) return;
+      const ids=new Set(state.transactions.map(t=>t.id));
+      state.transactions.push(...rows.filter(t=>!ids.has(t.id))); state.hasMore=rows.length===20; renderTransactions();
+    } catch(e) { toast(e.message,true); } finally { button.disabled=false; }
+  }
+  function field(name,label,{type='text',value='',placeholder='',required=true,extra='',hint=''}={}) {
+    return '<div class="form-field"><label class="field-label" for="f-'+esc(name)+'">'+esc(label)+'</label><input id="f-'+esc(name)+'" name="'+esc(name)+'" class="input" type="'+esc(type)+'" value="'+esc(value)+'" placeholder="'+esc(placeholder)+'"'+(required?' required':'')+' '+extra+'>'+(hint?'<p class="hint">'+esc(hint)+'</p>':'')+'</div>';
+  }
+  function selectField(name,label,options,value='') {
+    return '<div class="form-field"><label class="field-label" for="f-'+esc(name)+'">'+esc(label)+'</label><select id="f-'+esc(name)+'" class="input" name="'+esc(name)+'" required>'+options.map(o=>'<option value="'+esc(o.value)+'"'+(o.value===value?' selected':'')+'>'+esc(o.label)+'</option>').join('')+'</select></div>';
+  }
+  function moneyField(name,label,value='') {
+    return '<div class="form-field"><label class="field-label" for="f-'+esc(name)+'">'+esc(label)+'</label><div class="large-money-input"><span>R$</span><input id="f-'+esc(name)+'" name="'+esc(name)+'" class="input" inputmode="decimal" type="text" autocomplete="off" maxlength="20" placeholder="0,00" value="'+esc(value)+'" required></div></div>';
+  }
+  const accountOptions = () => state.accounts.filter(a=>a.active!==false).map(a=>({value:a.id,label:a.name+' · '+amount(a.balance)}));
+  const dateField = (name,label,value=today(),past=false) => field(name,label,{type:'date',value,extra:past?'max="'+today()+'"':''});
+  const grid = (a,b) => '<div class="form-grid">'+a+b+'</div>';
+  function showModal(config) {
+    if (modal?.busy) return;
+    modal={...config,busy:false,ctx:context()};
+    text('#dialog-title',config.title); text('#dialog-subtitle',config.subtitle || '');
+    $('#dialog-fields').innerHTML=config.html; errorBox('#dialog-error','');
+    text('#dialog-submit',config.label || 'Salvar'); $('#dialog-submit').disabled=false;
+    $('#dialog-pending').hidden=true;
+    if (!$('#dialog').open) $('#dialog').showModal();
+    icons(); config.afterOpen?.();
+    setTimeout(()=>$('#dialog-fields input:not([disabled]), #dialog-fields select:not([disabled])')?.focus(),40);
+  }
+  function closeModal() { if (!modal?.busy) { $('#dialog').close(); modal=null; } }
+  function needWrite() {
+    if (!canWrite()) { toast('Esta família permite apenas visualização para seu usuário.',true); return false; }
+    if (!state.ready) { toast('Aguarde o carregamento dos dados da família.',true); return false; }
+    return true;
+  }
+  function needAccount() {
+    if (accountOptions().length) return true;
+    toast('Adicione uma conta para continuar.'); accountModal(); return false;
+  }
+  function accountModal() {
+    if (!needWrite()) return;
+    showModal({title:'Uma nova conta.',subtitle:'Comece pelo saldo real na data de abertura.',label:'Adicionar conta',financial:true,
+      html:field('name','Nome da conta',{placeholder:'Ex.: Conta principal',extra:'maxlength="120"'})+
+        grid(selectField('kind','Tipo de conta',Object.entries(accountName).map(([value,label])=>({value,label})),'checking'),field('bank','Banco ou instituição',{required:false,extra:'maxlength="120"',placeholder:'Opcional'}))+
+        moneyField('opening_balance','Saldo de abertura','0,00')+dateField('opening_date','Data do saldo',today(),true)+
+        '<p class="form-info">O saldo inicial compõe o patrimônio de abertura. Ele não será registrado como uma nova receita.</p>',
+      submit:async values=>{
+        await write('/accounts',{name:values.name.trim(),kind:values.kind,bank:values.bank.trim() || null,opening_balance:toDecimal(inputToCents(values.opening_balance,true)),opening_date:values.opening_date,allow_overdraft:false});
+      },success:'Conta adicionada.'});
+  }
+  function categoryModal(kind='expense') {
+    if (!needWrite()) return;
+    showModal({title:'Uma categoria para organizar.',subtitle:'Agrupe seus lançamentos e entenda melhor os gastos.',label:'Criar categoria',financial:true,
+      html:field('name','Nome da categoria',{placeholder:kind==='income'?'Ex.: Salário':'Ex.: Alimentação',extra:'maxlength="120"'})+selectField('kind','Tipo',[{value:'expense',label:'Despesa'},{value:'income',label:'Receita'}],kind),
+      submit:values=>write('/categories',{name:values.name.trim(),kind:values.kind}),success:'Categoria criada. Você já pode fazer o lançamento.'});
+  }
+  function cardModal() {
+    if (!needWrite() || !needAccount()) return;
+    showModal({title:'Seu cartão, conectado.',subtitle:'Informe os dias do ciclo conforme o aplicativo do banco.',label:'Adicionar cartão',financial:true,
+      html:field('name','Nome do cartão',{placeholder:'Ex.: Meu cartão',extra:'maxlength="120"'})+
+        moneyField('credit_limit','Limite total')+grid(field('closing_day','Dia do fechamento',{type:'number',value:'2',extra:'min="1" max="31" step="1"'}),field('due_day','Dia do vencimento',{type:'number',value:'10',extra:'min="1" max="31" step="1"'}))+
+        selectField('payment_account_id','Conta padrão para pagamento',accountOptions())+
+        field('last_four','Quatro últimos dígitos',{required:false,placeholder:'Opcional',extra:'inputmode="numeric" pattern="[0-9]{4}" maxlength="4"'})+
+        '<p class="hint">Informe apenas o final do cartão, nunca o número completo ou o código de segurança.</p>',
+      submit:values=>write('/cards',{name:values.name.trim(),credit_limit:toDecimal(inputToCents(values.credit_limit,true)),closing_day:Number(values.closing_day),due_day:Number(values.due_day),payment_account_id:values.payment_account_id,last_four:values.last_four || null}),
+      success:'Cartão adicionado.'});
+  }
+  function toggleGroup(selector,enabled) {
+    const element=$(selector); element.hidden=!enabled;
+    element.querySelectorAll('input,select').forEach(i=>{i.disabled=!enabled;});
+  }
+  function transactionFormUpdate() {
+    const credit=$('#f-payment_method').value==='credit';
+    toggleGroup('#credit-fields',credit); toggleGroup('#cash-fields',!credit);
+    if (!credit) {
+      const paid=$('#f-paid').checked;
+      $('#payment-date-field').hidden=!paid; $('#f-payment_date').disabled=!paid;
+      return;
+    }
+    const card=state.cards.find(c=>c.id===$('#f-card_id').value);
+    text('#card-limit-hint',card?'Disponível: '+amount(card.available_limit)+' · Fechamento: dia '+card.closing_day:'Adicione um cartão antes de lançar a compra.');
+    try {
+      const cents=inputToCents($('#f-amount').value),n=Number($('#f-installments').value),parts=splitCents(cents,n);
+      const groups=new Map(); parts.forEach(p=>groups.set(p,(groups.get(p) || 0)+1));
+      text('#installment-preview',Array.from(groups,([p,count])=>count+' × '+money(p)).join(' + ')+'. Total: '+money(cents)+'.');
+    } catch(e) { text('#installment-preview',$('#f-amount').value?e.message:'Informe o valor para visualizar as parcelas.'); }
+  }
+  function transactionModal(kind='expense',cardId='') {
+    if (!needWrite()) return;
+    const cats=state.categories.filter(c=>c.kind===kind);
+    if (!cats.length) { toast('Crie uma categoria de '+(kind==='income'?'receita':'despesa')+' para continuar.'); categoryModal(kind); return; }
+    const cards=state.cards.filter(c=>c.active!==false),accounts=accountOptions();
+    if (!accounts.length && (kind==='income' || !cards.length)) { needAccount(); return; }
+    const isIncome=kind==='income',method=cardId || !accounts.length?'credit':'pix';
+    const methods=[{value:'pix',label:'PIX'},{value:'debit',label:'Débito'},{value:'boleto',label:'Boleto'},{value:'cash',label:'Dinheiro'},{value:'bank_transfer',label:'Transferência bancária'}];
+    if (!isIncome && cards.length) methods.unshift({value:'credit',label:'Cartão de crédito'});
+    showModal({title:isIncome?'Uma nova entrada.':'Registrar uma despesa.',subtitle:isIncome?'Dê nome ao dinheiro que entra.':'À vista ou no cartão, cada valor no seu lugar.',label:isIncome?'Registrar receita':'Registrar despesa',financial:true,
+      html:moneyField('amount',isIncome?'Valor da receita':'Valor total da compra')+
+        field('description','Descrição',{placeholder:isIncome?'Ex.: Salário do mês':'Ex.: Compras do mercado',extra:'maxlength="240"'})+
+        selectField('category_id','Categoria',cats.map(c=>({value:c.id,label:c.name})))+
+        grid(dateField('competency_date','Data de competência',today(),true),dateField('purchase_date','Data da compra / ocorrência',today(),true))+
+        selectField('payment_method','Forma de pagamento',methods,method)+
+        '<div id="credit-fields">'+grid(selectField('card_id','Cartão',cards.map(c=>({value:c.id,label:c.name})),cardId),field('installments','Número de parcelas',{type:'number',value:'1',extra:'min="1" max="600" step="1"',hint:'1 = à vista no crédito'}))+
+        '<p class="hint" id="card-limit-hint" style="margin-top:-10px;margin-bottom:13px"></p><div id="installment-preview" class="installment-preview" aria-live="polite"></div><p class="form-info">O valor total consome limite e é reconhecido na competência. As parcelas são distribuídas nas faturas pela API. O caixa muda quando você paga a fatura.</p></div>'+
+        '<div id="cash-fields">'+selectField('account_id',isIncome?'Conta de recebimento':'Conta de pagamento',accounts)+dateField('due_date','Vencimento')+
+        '<label class="checkbox-label"><input type="checkbox" id="f-paid" name="paid" checked> '+(isIncome?'Valor já recebido':'Valor já pago')+'</label><div id="payment-date-field">'+dateField('payment_date',isIncome?'Data do recebimento':'Data do pagamento',today(),true)+'</div><p class="hint">Sem a confirmação de pagamento, o lançamento gera uma obrigação e não altera o saldo da conta.</p></div>',
+      afterOpen:transactionFormUpdate,onInput:transactionFormUpdate,
+      submit:async values=>{
+        const total=inputToCents(values.amount),payload={amount:toDecimal(total),description:values.description.trim(),category_id:values.category_id,competency_date:values.competency_date,purchase_date:values.purchase_date};
+        if (values.payment_method==='credit') {
+          const n=Number(values.installments); splitCents(total,n);
+          const card=state.cards.find(c=>c.id===values.card_id);
+          if (!card || total>decimalToCents(card.available_limit)) throw new Error('O valor total excede o limite disponível deste cartão.');
+          await write('/cards/'+encodeURIComponent(values.card_id)+'/purchases',{...payload,installments:n});
+        } else {
+          if (values.paid && values.payment_date<values.competency_date) throw new Error('A data de pagamento não pode ser anterior à competência.');
+          await write('/transactions',{...payload,kind,account_id:values.account_id,payment_method:values.payment_method,due_date:values.due_date,...(values.paid?{payment_date:values.payment_date}:{})});
+        }
+      },success:isIncome?'Receita registrada.':'Despesa registrada.'});
+  }
+  function paymentModal(invoiceId='') {
+    if (!needWrite() || !needAccount()) return;
+    const invoices=state.invoices.filter(i=>decimalToCents(i.outstanding)>0n).sort((a,b)=>a.due_date.localeCompare(b.due_date));
+    if (!invoices.length) { toast('Você não tem faturas com saldo a pagar.'); return; }
+    const selected=invoices.find(i=>i.id===invoiceId) || invoices.find(i=>i.due_date.startsWith(state.month)) || invoices[0];
+    const updateInvoice=()=>{
+      const inv=invoices.find(i=>i.id===$('#f-invoice_id').value);
+      $('#f-amount').value=formMoney(decimalToCents(inv.outstanding));
+      const card=state.cards.find(c=>c.id===inv.card_id);
+      if (accountOptions().some(a=>a.value===card?.payment_account_id)) $('#f-account_id').value=card.payment_account_id;
+      text('#invoice-payment-hint','Saldo a pagar: '+amount(inv.outstanding)+'. Você pode pagar um valor parcial.');
+    };
+    showModal({title:'Pagar fatura.',subtitle:'Um pagamento que reduz a dívida e libera seu limite.',label:'Confirmar pagamento',financial:true,
+      html:selectField('invoice_id','Qual fatura?',invoices.map(i=>({value:i.id,label:(state.cards.find(c=>c.id===i.card_id)?.name || 'Cartão')+' · '+i.due_date.split('-').reverse().join('/')+' · '+amount(i.outstanding)})),selected.id)+
+        moneyField('amount','Quanto deseja pagar?')+'<p class="hint" id="invoice-payment-hint" style="margin-top:-10px;margin-bottom:17px"></p>'+
+        selectField('account_id','De qual conta sai o dinheiro?',accountOptions())+
+        grid(dateField('payment_date','Data do pagamento',today(),true),selectField('payment_method','Forma de pagamento',[{value:'pix',label:'PIX'},{value:'boleto',label:'Boleto'},{value:'automatic_debit',label:'Débito automático'},{value:'bank_transfer',label:'Transferência'}],'pix'))+
+        '<p class="form-info">O pagamento movimenta a conta e liquida o passivo do cartão. A despesa da compra já foi reconhecida e não será lançada novamente.</p>',
+      afterOpen:updateInvoice,
+      onInput:event=>{if(event.target.id==='f-invoice_id') updateInvoice();},
+      submit:values=>{
+        const cents=inputToCents(values.amount),invoice=invoices.find(i=>i.id===values.invoice_id);
+        if (!invoice || cents>decimalToCents(invoice.outstanding)) throw new Error('O pagamento não pode ultrapassar o saldo desta fatura.');
+        return write('/invoices/'+encodeURIComponent(values.invoice_id)+'/payments',{account_id:values.account_id,amount:toDecimal(cents),payment_date:values.payment_date,payment_method:values.payment_method});
+      },success:'Pagamento confirmado. O saldo e o limite foram atualizados.'});
+  }
+  function familyModal() {
+    if (!state.token) return;
+    showModal({title:'Um espaço para vocês.',subtitle:'Você será administrador desta família.',label:'Criar família',noRefresh:true,
+      html:field('name','Nome da família ou espaço',{placeholder:'Ex.: Família Silva',extra:'maxlength="120"'})+
+        field('timezone','Fuso horário',{value:Intl.DateTimeFormat().resolvedOptions().timeZone==='UTC'?'America/Sao_Paulo':Intl.DateTimeFormat().resolvedOptions().timeZone,hint:'Ex.: America/Sao_Paulo'}),
+      submit:values=>write('/auth/families',{name:values.name.trim(),timezone:values.timezone.trim()},{noFamily:true}),
+      afterSuccess:async result=>{
+        state.families.push({...result,role:'admin'});
+        await chooseFamily(result.id);
+      },
+      success:'Seu espaço está pronto.'});
+  }
+  function configModal() {
+    showModal({title:'Conectar sua API.',subtitle:'Use localhost para testes ou a URL HTTPS do Render.',label:'Salvar conexão',noRefresh:true,
+      html:field('api_url','URL base da API',{type:'url',value:state.base,placeholder:'https://sua-api.onrender.com',hint:'Informe a raiz, sem /docs e sem /auth. Nenhuma credencial do banco deve ser inserida aqui.'})+
+        '<button class="btn btn-light w-full" data-action="test-api" type="button">'+icon('plug-zap')+'Testar conexão</button><p id="connection-test-result" class="hint" role="status" style="margin:10px 0 16px"></p><p class="form-info">Ao mudar de servidor, você fará login novamente para acessar os dados dessa API.</p>',
+      submit:async values=>normalizeBase(values.api_url),
+      afterSuccess:newBase=>{
+        if (newBase!==state.base) { signOut(); state.base=newBase; storage.set(STORAGE.api,newBase); showApi(); }
+      },success:'Conexão salva.'});
+  }
+  async function testAPI(button) {
+    button.disabled=true;
+    try {
+      const newBase=normalizeBase($('#f-api_url').value);
+      text('#connection-test-result','Conectando… Se a API estiver em repouso, aguarde o início.');
+      const result=await api('/health',{ctx:{base:newBase,token:'',family:''},public:true});
+      if ($('#connection-test-result')) text('#connection-test-result',result.status==='ok'?'API respondeu. O banco será verificado ao entrar.':'A API respondeu, mas o healthcheck não confirmou o status.');
+    } catch(e) { if ($('#connection-test-result')) text('#connection-test-result',e.message); } finally { button.disabled=false; }
+  }
+  function logoutAllModal() {
+    showModal({title:'Sair de todos os dispositivos?',subtitle:'Seu acesso será encerrado aqui e nas outras sessões.',label:'Encerrar sessões',noRefresh:true,
+      html:'<p class="form-info">Seus dados continuam salvos. Para voltar, entre novamente com seu e-mail e senha.</p>',
+      submit:()=>write('/auth/logout-all',{}, {noFamily:true}),afterSuccess:()=>signOut(),success:'Todas as sessões foram encerradas.'});
+  }
+  async function submitModal(event) {
+    event.preventDefault();
+    const current=modal;
+    if (!current || current.busy) return;
+    if (current.financial && (!needWrite() || !sameContext(current.ctx))) { errorBox('#dialog-error','A família ou a sessão mudou. Abra o formulário novamente.'); return; }
+    const values=Object.fromEntries(new FormData($('#dialog-form')).entries());
+    current.busy=true; errorBox('#dialog-error',''); $('#dialog-pending').hidden=false;
+    const controls=Array.from($('#dialog').querySelectorAll('input,select,button'));
+    const disabled=controls.map(c=>c.disabled);
+    controls.forEach(c=>{c.disabled=true;});
+    try {
+      const result=await current.submit(values);
+      if (modal!==current) return;
+      $('#dialog').close(); modal=null;
+      toast(current.success || 'Operação concluída.');
+      if (current.afterSuccess) await current.afterSuccess(result);
+      else if (!current.noRefresh && sameContext(current.ctx)) await refresh();
+    } catch(error) {
+      if (modal===current) {
+        errorBox('#dialog-error',error.message);
+        if (error.uncertain && !current.financial) {
+          errorBox('#dialog-error',error.message+' Para cadastro de família, feche o formulário e consulte a lista antes de reenviar.');
+        }
+      }
+    } finally {
+      current.busy=false;
+      controls.forEach((c,i)=>{c.disabled=disabled[i];});
+      if (modal===current) $('#dialog-pending').hidden=true;
+    }
+  }
+  async function submitAuth(event) {
+    event.preventDefault(); if (authBusy) return;
+    authBusy=true; const mode=state.authMode;
+    $('#auth-submit').disabled=true; text('#auth-submit','Conectando…'); errorBox('#auth-error','');
+    const email=$('#auth-email').value.trim(),password=$('#auth-password').value;
+    try {
+      if (mode==='register') {
+        if (password.length<12 || new TextEncoder().encode(password).length>72) throw new Error('Use uma senha de 12 caracteres ou mais, com no máximo 72 bytes UTF-8.');
+        await api('/auth/register',{method:'POST',public:true,body:{name:$('#auth-name').value.trim(),email,password}});
+        // Após cadastro confirmado, uma eventual falha no login não repete o registro.
+        authMode('login'); toast('Conta criada. Preparando seu primeiro acesso.');
+      }
+      const result=await api('/auth/token',{method:'POST',public:true,body:new URLSearchParams({username:email,password})});
+      state.token=result.access_token; storage.set(STORAGE.token,state.token); storage.set(STORAGE.bound,state.base);
+      $('#auth-password').value=''; await loadSession();
+    } catch(error) { errorBox('#auth-error',error.message); }
+    finally { authBusy=false; $('#auth-submit').disabled=false; text('#auth-submit',state.authMode==='register'?'Criar minha conta':'Entrar na minha conta'); }
+  }
+  async function changeMonth(delta) {
+    const [year,month]=state.month.split('-').map(Number),date=new Date(Date.UTC(year,month-1+delta,1));
+    state.month=date.toISOString().slice(0,7); $('#month-input').value=state.month; await refresh();
+  }
+  function privacy() {
+    const hidden=document.body.classList.toggle('money-hidden');
+    $('#privacy-button').setAttribute('aria-label',hidden?'Mostrar valores':'Ocultar valores');
+    $('#privacy-button').innerHTML=icon(hidden?'eye-off':'eye'); icons();
+  }
+  async function action(event) {
+    const button=event.target.closest('[data-action]');
+    if (!button || button.disabled) return;
+    try {
+      switch(button.dataset.action) {
+        case 'auth-login': if (!authBusy) authMode('login'); break;
+        case 'auth-register': if (!authBusy) authMode('register'); break;
+        case 'toggle-password': {
+          const input=$('#auth-password'),show=input.type==='password'; input.type=show?'text':'password';
+          button.setAttribute('aria-label',show?'Ocultar senha':'Mostrar senha'); button.innerHTML=icon(show?'eye-off':'eye'); icons(); break;
+        }
+        case 'config': if (!authBusy) configModal(); break;
+        case 'test-api': await testAPI(button); break;
+        case 'close-dialog': closeModal(); break;
+        case 'navigate': navigate(button.dataset.view); break;
+        case 'select-family': await chooseFamily(button.dataset.id); break;
+        case 'families': {
+          if (!state.token) break;
+          // Também reconcilia uma criação de família que tenha ficado sem confirmação.
+          button.disabled=true;
+          try { state.families=await api('/auth/families',{noFamily:true}); showFamilies(); } finally { button.disabled=false; }
+          break;
+        }
+        case 'new-family': familyModal(); break;
+        case 'new-account': accountModal(); break;
+        case 'new-category': categoryModal(); break;
+        case 'new-card': cardModal(); break;
+        case 'expense': transactionModal('expense',button.dataset.card || ''); break;
+        case 'income': transactionModal('income'); break;
+        case 'payment': paymentModal(button.dataset.id || ''); break;
+        case 'refresh': await refresh(); break;
+        case 'more-transactions': await moreTransactions(); break;
+        case 'month-prev': await changeMonth(-1); break;
+        case 'month-next': await changeMonth(1); break;
+        case 'privacy': privacy(); break;
+        case 'logout': signOut(); break;
+        case 'logout-all': logoutAllModal(); break;
+      }
+    } catch(error) { toast(error.message,true); }
+  }
+  async function boot() {
+    document.addEventListener('click',action);
+    $('#auth-form').addEventListener('submit',submitAuth);
+    $('#dialog-form').addEventListener('submit',submitModal);
+    $('#dialog-fields').addEventListener('input',event=>{if (!modal?.busy) modal?.onInput?.(event);});
+    $('#dialog').addEventListener('cancel',event=>{ if (modal?.busy) event.preventDefault(); else modal=null; });
+    $('#month-input').addEventListener('change',async event=>{
+      if (/^\d{4}-(0[1-9]|1[0-2])$/.test(event.target.value)) { state.month=event.target.value; await refresh(); }
+    });
+    window.addEventListener('storage',event=>{
+      if ([STORAGE.token,STORAGE.api,STORAGE.bound].includes(event.key)) {
+        signOut('A sessão foi alterada em outra aba. Entre novamente.',false);
+        try { state.base=normalizeBase(storage.get(STORAGE.api) || DEFAULT_API_BASE); showApi(); } catch {}
+      }
+    });
+    showApi(); icons(); authMode('login');
+    if (state.token) { try { await loadSession(); } catch(error) { errorBox('#auth-error',error.message); } }
+  }
+  // Funções puras expostas para verificação de precisão; não expõe o token ou o estado da sessão.
+  window.SisFin=Object.freeze({decimalToCents,toDecimal,inputToCents,splitCents,money});
+  document.addEventListener('DOMContentLoaded',boot,{once:true});
+})();
+
+</script>
+</body>
+</html>
+

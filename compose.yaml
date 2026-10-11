@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: sisfin
+      POSTGRES_USER: sisfin_migrator
+      POSTGRES_PASSWORD: ${DB_MIGRATION_PASSWORD:?configure .env}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD:?configure .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/01-app-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sisfin_migrator -d sisfin"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  migrate:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+asyncpg://sisfin_migrator:${DB_MIGRATION_PASSWORD}@db:5432/sisfin
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+asyncpg://sisfin_app:${DB_APP_PASSWORD}@db:5432/sisfin
+      JWT_SECRET: ${JWT_SECRET:?configure .env}
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  tests:
+    profiles: ["test"]
+    build: .
+    environment:
+      DATABASE_URL: postgresql+asyncpg://sisfin_app:${DB_APP_PASSWORD}@db:5432/sisfin
+      TEST_DATABASE_URL: postgresql+asyncpg://sisfin_app:${DB_APP_PASSWORD}@db:5432/sisfin
+      JWT_SECRET: ${JWT_SECRET:?configure .env}
+    command: ["pytest", "-q", "-m", "integration"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+volumes:
+  postgres_data:

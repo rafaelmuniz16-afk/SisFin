@@ -1,0 +1,14 @@
+{
+  "name": "sisfin-frontend-checks",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test check.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "jsdom": "26.1.0"
+  }
+}
